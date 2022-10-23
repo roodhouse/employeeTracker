@@ -8,7 +8,7 @@ const db = mysql.createConnection(
     {
         host: '127.0.0.1',
         user: 'root',
-        password: '',
+        password: 'JRbeckham16',
         database: 'employees_db',
         port: 3306,
     },
@@ -23,4 +23,23 @@ db.connect(function (err) {
 
 function initPrompt() {
     console.log('init prompty')
+    inquirer.prompt([
+        {
+        type: 'list',
+        name: 'userChoice',
+        message: 'What would you like to accomplish?',
+        choices: [
+            'View all employees',
+            'View Employees by department',
+            'Add an employee',
+            'Remove an employee',
+            'Update an employee role',
+            'Add a new role',
+            'Add a new department',
+            'Exit'
+        ]
+    }
+    ]).then((res) => {
+        console.log(res.userChoice);
+    })
 }
