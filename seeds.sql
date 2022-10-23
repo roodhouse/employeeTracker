@@ -20,6 +20,6 @@ VALUES (001, "James", "Ford", 001, null),
        (003, "Jack", "Shepard", 003, null),
        (004, "Kate", "Austen", 004, 003),
        (005, "Hugo", "Reyes", 005, null),
-       (006, "Ben", "Linus", 006, 005)
+       (006, "Ben", "Linus", 006, 005),
        (007, "Richard", "Alpert", 007, null),
        (008, "Penny", "Widmore", 008, 007);
