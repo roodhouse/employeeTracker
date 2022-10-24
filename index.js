@@ -9,7 +9,7 @@ const db = mysql.createConnection(
     {
         host: '127.0.0.1',
         user: 'root',
-        password: '',
+        password: 'JRbeckham16',
         database: 'employees_db',
         port: 3306,
     },
@@ -118,6 +118,62 @@ function addDepartment() {
         ]).then((res) => {
             let query = 'INSERT INTO department SET ?';
             db.query(query, {name: res.name}, (err, res) => {
+                if(err) throw err;
+                initPrompt();
+            });
+        });
+}
+
+// add role
+function addRole() {
+    let query =
+    `SELECT
+        department.id,
+        department.name,
+        role.salary
+    FROM employee
+    JOIN role
+        ON employee.role_id = role.id
+    JOIN department
+        ON department.id = role.department_id`
+
+    db.query(query, (err, res) => {
+        if(err)throw err;
+        const department = res.map(({ id, name })=> ({
+            value: id,
+            name: `${id} ${name}`
+        }));
+        console.table(res);
+        addRoleTo(department);
+    });
+}
+
+function addRoleTo(department) {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "Role title: "
+             },
+             {
+                type: "input",
+                name: "salary",
+                message: "Salary for role: "
+             },
+             {
+                type: "list",
+                name: "department",
+                message: "Department: ",
+                choices: department
+             }
+        ]).then((res) => {
+            let query = 'INSERT INTO role SET ?';
+            db.query(query, {
+                title: res.title,
+                salary: res.salary,
+                department_id: res.department
+            }, (err, res) => {
                 if(err) throw err;
                 initPrompt();
             });

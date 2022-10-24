@@ -1,2 +1,4 @@
 1. How to reference manager_id but display the manager name and NOT the manager_id?
 2. get all functions working
+    -- add employee
+    -- update employee
