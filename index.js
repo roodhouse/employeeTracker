@@ -1,6 +1,7 @@
 // bring in dependencies
 const mysql    = require('mysql2');
 const inquirer = require('inquirer');
+// const allEmployees = require('./functions');
 require('console.table');
 
 // connect to the database
@@ -41,5 +42,56 @@ function initPrompt() {
     }
     ]).then((res) => {
         console.log(res.userChoice);
-    })
+        switch(res.userChoice) {
+            case 'View All Employees':
+                allEmployees();
+                break;
+            case 'View Employees by department':
+                employeesByDepartment();
+                break;
+            case 'Add an employee':
+                addNewEmployee();
+                break;
+            case 'Remove an employee':
+                removeEmployee();
+                break;
+            case 'Update an employee role':
+                updateRole();
+                break;
+            case 'Add a new role':
+                newRole();
+                break;
+            case 'Add a new department':
+                newDepartment();
+                break;
+            case 'Exit':
+                db.end();
+                break;
+        }
+    }).catch((err) => {
+        if(err)throw err;
+    });
+}
+
+function allEmployees() {
+    let query = 
+    `SELECT 
+        employee.id,
+        employee.first_name,
+        emplyoee.last_name,
+        role.title,
+        department.name as Department,
+        role.salary,
+    FROM employee
+    LEFT JOIN role
+        ON employee.role_id = role.id
+    LEFT JOIN department
+        ON department.id = role.department_id`
+    // console.log('all employees here');
+
+    db.query(query, (err, res) =>{
+        if(err) throw err;
+        console.table(res);
+        initPrompt();
+    });
 }
