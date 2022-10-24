@@ -30,39 +30,39 @@ function initPrompt() {
         name: 'userChoice',
         message: 'What would you like to accomplish?',
         choices: [
+            'View all departments',
+            'View all roles',
             'View all employees',
-            'View Employees by department',
+            'Add a department',
+            'Add a role',
             'Add an employee',
-            'Remove an employee',
-            'Update an employee role',
-            'Add a new role',
-            'Add a new department',
+            'Update employee role',
             'Exit'
         ]
     }
     ]).then((res) => {
         console.log(res.userChoice);
         switch(res.userChoice) {
-            case 'View All Employees':
-                allEmployees();
+            case 'View all departments':
+                viewDepartments();
                 break;
-            case 'View Employees by department':
-                employeesByDepartment();
+            case 'View all roles':
+                viewRoles();
+                break;
+            case 'View all employees':
+                viewEmployees();
+                break;
+            case 'Add a department':
+                addDepartment();
+                break;
+            case 'Add a role':
+                addRole();
                 break;
             case 'Add an employee':
-                addNewEmployee();
+                addEmployee();
                 break;
-            case 'Remove an employee':
-                removeEmployee();
-                break;
-            case 'Update an employee role':
-                updateRole();
-                break;
-            case 'Add a new role':
-                newRole();
-                break;
-            case 'Add a new department':
-                newDepartment();
+            case 'Update employee role':
+                updateEmployee();
                 break;
             case 'Exit':
                 db.end();
@@ -73,25 +73,53 @@ function initPrompt() {
     });
 }
 
-function allEmployees() {
-    let query = 
-    `SELECT 
-        employee.id,
-        employee.first_name,
-        emplyoee.last_name,
-        role.title,
-        department.name as Department,
-        role.salary,
-    FROM employee
-    LEFT JOIN role
-        ON employee.role_id = role.id
-    LEFT JOIN department
-        ON department.id = role.department_id`
-    // console.log('all employees here');
+// viewDepartments
+function viewDepartments() {
+    let query = `SELECT * FROM department`;
 
     db.query(query, (err, res) =>{
         if(err) throw err;
         console.table(res);
         initPrompt();
     });
+}
+
+// view roles
+function viewRoles() {
+    let query = `SELECT * FROM role`;
+
+    db.query(query, (err, res) =>{
+        if(err) throw err;
+        console.table(res);
+        initPrompt();
+    });
+}
+
+// view employees
+function viewEmployees() {
+    let query = `SELECT * FROM employee`;
+
+    db.query(query, (err, res) =>{
+        if(err) throw err;
+        console.table(res);
+        initPrompt();
+    });
+}
+
+// add department
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "Department Name: "
+             }
+        ]).then((res) => {
+            let query = 'INSERT INTO department SET ?';
+            db.query(query, {name: res.name}, (err, res) => {
+                if(err) throw err;
+                initPrompt();
+            });
+        });
 }
