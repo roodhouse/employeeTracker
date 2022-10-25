@@ -181,6 +181,7 @@ function addRoleTo(department) {
 }
 
 // add employee
+// show the role table 
 function addEmployee() {
     let query =
     `SELECT *
