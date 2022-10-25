@@ -183,10 +183,7 @@ function addRoleTo(department) {
 // add employee
 function addEmployee() {
     let query =
-    `SELECT
-        role.id,
-        role.title,
-        role.salary,
+    `SELECT *
     FROM role`
 
     db.query(query, (err, res) => {
